@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VR Creation – Premium Custom Embroidery Designs. Stitch Your Story." />
+  <title>VR Creation | Premium Embroidery</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES
+    ============================================================ */
+    :root {
+      --bg:        #121212;
+      --maroon:    #4a0404;
+      --maroon-lt: #6b0606;
+      --gold:      #D4AF37;
+      --gold-lt:   #e8c84a;
+      --offwhite:  #F5F5F5;
+      --gray:      #888;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Montserrat', sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--offwhite);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none; /* Hide default cursor */
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { display: block; width: 100%; }
+
+    /* ============================================================
+       CUSTOM CURSOR
+    ============================================================ */
+    #cursor-dot,
+    #cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity .3s;
+    }
+
+    #cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+    }
+
+    #cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid var(--gold);
+      opacity: .55;
+      transition: width .25s, height .25s, opacity .3s;
+    }
+
+    body:hover #cursor-dot,
+    body:hover #cursor-ring { opacity: 1; }
+
+    /* Expand ring on hoverable elements */
+    a:hover ~ #cursor-ring,
+    button:hover ~ #cursor-ring { width: 48px; height: 48px; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.6rem 4rem;
+      transition: background .4s, padding .4s;
+    }
+
+    nav.scrolled {
+      background: rgba(18,18,18,.92);
+      backdrop-filter: blur(12px);
+      padding: 1rem 4rem;
+      border-bottom: 1px solid rgba(212,175,55,.15);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--gold);
+    }
+
+    .nav-logo span { color: var(--offwhite); font-weight: 400; font-style: italic; }
+
+    .nav-links { display: flex; gap: 2.4rem; }
+    #menuitems{
+      display: flex; gap: 2.4rem;
+    }
+    #menuitems a{
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--offwhite);
+      opacity: .75;
+      transition: opacity .2s, color .2s;
+    }
+
+     .nav-links a{
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--offwhite);
+      opacity: .75;
+      transition: opacity .2s, color .2s;
+    }
+    #menuitems .su{
+      margin-top: 20px;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    #menuitems .su:hover { opacity: 1; color: var(--gold); }
+    .fa-ig{
+      margin-top: 10px;
+       display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      transition: box-shadow .3s, transform .2s;
+    }
+
+    /* Mobile menu toggle button */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: none;
+    }
+
+    .mobile-menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--offwhite);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Parallax bg layer */
+    #hero-bg {
+      position: absolute;
+      inset: -15%;
+      background:
+        url('https://picsum.photos/seed/embroidery/1800/1000')
+        center/cover no-repeat;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    /* Dark overlay */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(18,18,18,.78) 0%,
+        rgba(74,4,4,.45) 55%,
+        rgba(18,18,18,.88) 100%
+      );
+      z-index: 1;
+    }
+
+    /* Glassmorphism card */
+    .hero-glass {
+      position: relative;
+      z-index: 2;
+      padding: 3.5rem 5rem;
+      border: 1px solid rgba(212,175,55,.22);
+      border-radius: 5px;
+      background: rgba(18,18,18,.35);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      max-width: 750px;
+      animation: heroFadeIn 1.4s cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--offwhite);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: .85rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(245,245,245,.7);
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .85rem 2.4rem;
+      background: var(--gold);
+      color: #0a0a0a;
+      font-family: var(--sans);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: none;
+      transition: background .25s, transform .2s, box-shadow .25s;
+      box-shadow: 0 4px 28px rgba(212,175,55,.28);
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 36px rgba(212,175,55,.45);
+    }
+
+    .btn-gold svg { width: 16px; height: 16px; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      font-size: .6rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(245,245,245,.4);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: .4; }
+      50%       { opacity: .9; }
+    }
+
+    /* ============================================================
+       SECTION SHARED
+    ============================================================ */
+    section { padding: 7rem 4rem; }
+
+    .section-label {
+      font-size: .6rem;
+      font-weight: 600;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .8rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-rule {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 1.8rem;
+    }
+
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ============================================================
+       ABOUT STRIP
+    ============================================================ */
+    #about {
+      background: var(--maroon);
+      padding: 5rem 4rem;
+      display: flex;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-text { flex: 1; }
+
+    .about-text p {
+      font-size: .9rem;
+      line-height: 1.9;
+      color: rgba(245,245,245,.8);
+      max-width: 520px;
+    }
+
+    .about-stats {
+      flex-shrink: 0;
+      display: flex;
+      gap: 3.5rem;
+    }
+
+    .stat-item { text-align: center; }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .6rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(245,245,245,.6);
+      margin-top: .4rem;
+    }
+
+    /* ============================================================
+       PORTFOLIO GALLERY
+    ============================================================ */
+    #portfolio { background: var(--bg); }
+
+    .portfolio-header {
+      max-width: 540px;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Masonry-style grid */
+    .gallery-grid {
+      columns: 3;
+      column-gap: 1.2rem;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1.2rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      cursor: none;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      filter: grayscale(80%) brightness(.85);
+      transition: filter .55s ease, transform .55s ease;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(74,4,4,.88) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .45s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.4rem;
+    }
+
+    .gallery-overlay .btn-view {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: .5rem 1.2rem;
+      border-radius: 2px;
+      transform: translateY(10px);
+      transition: transform .35s ease, background .25s;
+    }
+
+    .gallery-item:hover img {
+      filter: grayscale(0%) brightness(1);
+      transform: scale(1.04);
+    }
+
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    .gallery-item:hover .btn-view {
+      transform: translateY(0);
+      background: rgba(212,175,55,.12);
+    }
+
+    /* ============================================================
+       PROCESS SECTION
+    ============================================================ */
+    #process {
+      background: #0d0d0d;
+      display: flex;
+      gap: 5rem;
+      align-items: flex-start;
+    }
+
+    .process-intro { flex: 0 0 320px; }
+
+    .process-intro p {
+      font-size: .85rem;
+      line-height: 1.9;
+      color: rgba(245,245,245,.65);
+      margin-top: 1rem;
+    }
+
+    .process-steps { flex: 1; display: flex; flex-direction: column; gap: 2.2rem; }
+
+    .step {
+      display: flex;
+      gap: 1.8rem;
+      align-items: flex-start;
+      padding-bottom: 2.2rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .step:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .step-num {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--maroon);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 50px;
+    }
+
+    .step-content h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: .4rem;
+      color: var(--offwhite);
+    }
+
+    .step-content p {
+      font-size: .8rem;
+      line-height: 1.8;
+      color: rgba(245,245,245,.55);
+    }
+
+    /* ============================================================
+       CTA BAND
+    ============================================================ */
+    #cta {
+      background: var(--maroon);
+      text-align: center;
+      padding: 6rem 4rem;
+    }
+
+    #cta .section-title { color: var(--offwhite); margin-bottom: 1rem; }
+
+    #cta p {
+      font-size: .85rem;
+      color: rgba(245,245,245,.7);
+      margin-bottom: 2.4rem;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: #0a0a0a;
+      padding: 4rem 4rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(212,175,55,.1);
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+
+    .footer-logo span { font-style: italic; font-weight: 400; color: var(--offwhite); }
+
+    .footer-tagline {
+      font-size: .65rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(245,245,245,.35);
+      margin-bottom: 2.2rem;
+    }
+
+    .footer-ig {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      transition: box-shadow .3s, transform .2s;
+    }
+
+    .footer-ig:hover {
+      box-shadow: 0 0 24px rgba(212,175,55,.5), 0 0 48px rgba(212,175,55,.2);
+      transform: scale(1.08);
+    }
+
+    .footer-ig svg { width: 22px; height: 22px; }
+
+    .footer-copy {
+      font-size: .65rem;
+      color: rgba(245,245,245,.2);
+      letter-spacing: .08em;
+      border-top: 1px solid rgba(255,255,255,.05);
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 960px) {
+      nav { padding: 1.4rem 2rem; }
+      nav.scrolled { padding: .9rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+
+      section { padding: 5rem 2rem; }
+      #about { flex-direction: column; gap: 3rem; padding: 4rem 2rem; }
+      .about-stats { gap: 2.5rem; }
+      #process { flex-direction: column; gap: 3rem; }
+      .process-intro { flex: unset; }
+
+      .gallery-grid { columns: 2; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1.2rem 1.4rem; }
+      nav.scrolled { padding: .8rem 1.4rem; }
+      .nav-links { 
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 1.2rem;
+        background: rgba(18,18,18,.98);
+        padding: 1.6rem;
+        border-bottom: 1px solid rgba(212,175,55,.15);
+      }
+      .nav-links.active { display: flex; }
+
+      #menuitems {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+      #menuitems .su {
+        margin-top: 0;
+      }
+
+      .fa-ig {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .mobile-menu-toggle {
+        display: flex;
+      }
+
+      .hero-glass { padding: 2.4rem 1.8rem; margin: 1rem; }
+
+      section { padding: 4rem 1.4rem; }
+      #about { padding: 3.5rem 1.4rem; }
+      #cta { padding: 4rem 1.4rem; }
+      footer { padding: 3rem 1.4rem 2rem; }
+
+      .gallery-grid { columns: 1; }
+
+      .about-stats { flex-wrap: wrap; justify-content: center; gap: 2rem; }
+
+      /* Remove custom cursor for mobile */
+      #cursor-dot, #cursor-ring { display: none !important; }
+      body { cursor: auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       CUSTOM CURSOR
+  ============================================================ -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav id="navbar">
+    <div class="nav-logo"><a href="vr-creation.html">VR <span>Creation</span></a></div>
+    <div class="nav-links">
+      <div id="menuitems">
+      <a class="su" href="#portfolio">Work</a>
+      <a class="su" href="#process">Process</a>
+      <a class="su" href="#cta">Contact</a>
+      </div>
+      <a
+      href="https://www.instagram.com/_vr.creation_/"
+      target="_blank"
+      rel="noopener"
+      class="fa-ig"
+      aria-label="Follow VR Creation on Instagram"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+    </div>
+    <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu"></button>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero">
+    <div id="hero-bg"></div>
+
+    <div class="hero-glass">
+      <p class="hero-eyebrow">Handcrafted with intention</p>
+      <h1 class="hero-headline">Stitch Your <em>Story</em></h1>
+      <p class="hero-sub">Premium Custom Embroidery Designs</p>
+      <a
+        href="https://www.instagram.com/_vr.creation_/"
+        target="_blank"
+        rel="noopener"
+        class="btn-gold"
+      >
+        <!-- Instagram icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/>
+        </svg>
+        DM to Customize
+      </a>
+    </div>
+
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT STRIP
+  ============================================================ -->
+  <div id="about">
+    <div class="about-text reveal">
+      <p class="section-label">Our Craft</p>
+      <h2 class="section-title" style="font-size:1.9rem; margin-bottom:.9rem;">
+        Every thread tells<br/>a different tale.
+      </h2>
+      <div class="section-rule"></div>
+      <p>
+        VR Creation is a boutique embroidery studio where artisanship meets modern
+        design. We transform your ideas—monograms, logos, portraits, and custom
+        motifs—into heirloom-quality needlework. Each piece is stitched with
+        precision, patience, and an obsessive eye for detail.
+      </p>
+    </div>
+    <div class="about-stats reveal" style="transition-delay:.15s">
+      <div class="stat-item">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Pieces crafted</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Custom orders</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Years of craft</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PORTFOLIO GALLERY
+  ============================================================ -->
+  <section id="portfolio">
+    <div class="portfolio-header reveal">
+      <p class="section-label">Our Work</p>
+      <h2 class="section-title">Crafted with<br/>each stitch.</h2>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="gallery-grid">
+
+      <!-- Item 1 -->
+      <div class="gallery-item reveal">
+        <img
+          src="src/1.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="gallery-item reveal" style="transition-delay:.06s">
+        <img
+          src="src/2.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="gallery-item reveal" style="transition-delay:.12s">
+        <img
+          src="src/3.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="gallery-item reveal" style="transition-delay:.04s">
+        <img
+          src="src/4.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="gallery-item reveal" style="transition-delay:.1s">
+        <img
+          src="src/5.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 6 -->
+      <div class="gallery-item reveal" style="transition-delay:.16s">
+        <img
+          src="src/6.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 7 -->
+      <div class="gallery-item reveal" style="transition-delay:.08s">
+        <img
+          src="src/7.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 8 -->
+      <div class="gallery-item reveal" style="transition-delay:.14s">
+        <img
+          src="src/8.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+      <!-- Item 9 -->
+      <div class="gallery-item reveal" style="transition-delay:.2s">
+        <img
+          src="src/9.jpg"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <a href="https://www.instagram.com/_vr.creation_/" target="_blank" rel="noopener" class="btn-view">View on Instagram</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROCESS
+  ============================================================ -->
+  <section id="process">
+    <div class="process-intro reveal">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">From idea<br/>to heirloom.</h2>
+      <div class="section-rule"></div>
+      <p>
+        We keep the process simple so you can focus on the vision—
+        we handle the craft. Every order is a collaboration.
+      </p>
+    </div>
+
+    <div class="process-steps">
+
+      <div class="step reveal" style="transition-delay:.08s">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Share Your Vision</h3>
+          <p>DM us on Instagram with your idea—a sketch, reference image, or even just a feeling. We'll ask the right questions.</p>
+        </div>
+      </div>
+
+      <div class="step reveal" style="transition-delay:.16s">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Design Approval</h3>
+          <p>We digitise your concept into a stitch-ready design. You review and approve before a single needle touches fabric.</p>
+        </div>
+      </div>
+
+      <div class="step reveal" style="transition-delay:.24s">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Handcrafted Production</h3>
+          <p>Our artisans bring the design to life stitch by stitch, using premium threads and materials chosen for lasting quality.</p>
+        </div>
+      </div>
+
+      <div class="step reveal" style="transition-delay:.32s">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Delivered to You</h3>
+          <p>Your finished piece is quality-checked, carefully packaged, and shipped—ready to be worn, gifted, or framed.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA BAND
+  ============================================================ -->
+  <section id="cta">
+    <div class="reveal">
+      <p class="section-label">Start Your Order</p>
+      <h2 class="section-title">Ready to stitch<br/>your story?</h2>
+      <p>Every design starts with a conversation. Reach out on Instagram and let's create something beautiful together.</p>
+      <a
+        href="https://www.instagram.com/_vr.creation_/"
+        target="_blank"
+        rel="noopener"
+        class="btn-gold"
+        style="font-size:.7rem;"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/>
+        </svg>
+        DM Us on Instagram
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="footer-logo">VR <span>Creation</span></div>
+    <p class="footer-tagline">Premium Custom Embroidery · Est. 2021</p>
+
+    <a
+      href="https://www.instagram.com/_vr.creation_/"
+      target="_blank"
+      rel="noopener"
+      class="footer-ig"
+      aria-label="Follow VR Creation on Instagram"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r=".7" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+
+    <p class="footer-copy">© 2025 VR Creation. All rights reserved. Handcrafted with ♥</p>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ----------------------------------------------------------
+       CHECK IF MOBILE
+    ---------------------------------------------------------- */
+    const isMobile = () => window.innerWidth <= 600;
+
+    /* ----------------------------------------------------------
+       1. CUSTOM CURSOR (Desktop only)
+    ---------------------------------------------------------- */
+    if (!isMobile()) {
+      const dot  = document.getElementById('cursor-dot');
+      const ring = document.getElementById('cursor-ring');
+
+      let mouseX = 0, mouseY = 0;
+      let ringX  = 0, ringY  = 0;
+
+      document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top  = mouseY + 'px';
+      });
+
+      // Smooth ring lag
+      (function animateRing() {
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        ring.style.left = ringX + 'px';
+        ring.style.top  = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      })();
+
+      // Expand ring on interactive elements
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          ring.style.width  = '52px';
+          ring.style.height = '52px';
+          ring.style.opacity = '.8';
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.style.width  = '32px';
+          ring.style.height = '32px';
+          ring.style.opacity = '.55';
+        });
+      });
+    }
+
+    /* ----------------------------------------------------------
+       2. MOBILE MENU TOGGLE
+    ---------------------------------------------------------- */
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    // Create hamburger spans
+    if (mobileMenuToggle && isMobile()) {
+      mobileMenuToggle.innerHTML = '<span></span><span></span><span></span>';
+      
+      mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+
+      // Close menu when clicking nav links
+      document.querySelectorAll('#menuitems a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
+    }
+
+    /* ----------------------------------------------------------
+       3. NAVBAR SCROLL
+    ---------------------------------------------------------- */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ----------------------------------------------------------
+       4. PARALLAX HERO BACKGROUND
+    ---------------------------------------------------------- */
+    const heroBg = document.getElementById('hero-bg');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      heroBg.style.transform = `translateY(${scrolled * 0.38}px)`;
+    }, { passive: true });
+
+    /* ----------------------------------------------------------
+       5. SCROLL-TRIGGERED REVEAL (Intersection Observer)
+    ---------------------------------------------------------- */
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
