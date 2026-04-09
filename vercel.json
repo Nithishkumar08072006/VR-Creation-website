@@ -1,7 +1,8 @@
 {
     "rewrites": [
         {
-            "source": "/vr-creation.html"
+            "source": "/(.*)",
+            "destination": "/vr-creation.html"
         }
     ]
 }
